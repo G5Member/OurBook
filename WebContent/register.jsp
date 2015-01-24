@@ -36,7 +36,7 @@ function verify_submit(regform)
 	//alert(xmlDoc.getElementsByTagName("used")[0].childNodes[0].nodeValue);
 	if(xmlDoc.getElementsByTagName("used")[0].childNodes[0].nodeValue == "NO")
 	{
-		alert("false name");
+		alert("用户名已存在...");
 		return false;
 	}
 
@@ -68,7 +68,7 @@ function showIdExist(str)
 
 注册模块
 <form action="registercheck.jsp" name="regform" onsubmit="return verify_submit(this)" method="POST">
-用户名：<input type="text" onkeyup="showIdExist(this.value)" name="user_id" />
+用户名：<input type="text" onkeyup="showIdExist(this.value)" onblur="showIdExist(this.value)" name="user_id" />
 <span id="txtHint">用户名请使用5~18个英文字符、数字或下划线</span>
 <br />
 昵称：<input type="text" name="user_nickname" />

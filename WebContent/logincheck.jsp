@@ -15,7 +15,7 @@ pstmt.setString(2, user_info.getUser_password());
 
 ResultSet rs = pstmt.executeQuery();
 if(!rs.next()) 
-{ 
+{
 %>
 <script type="text/javascript" language="javascript">
 	alert("登录失败，请重新登录...");
@@ -25,6 +25,7 @@ if(!rs.next())
 }
 else
 {
+	session.setAttribute("user_id", user_info.getUser_id());
 %>
 <script type="text/javascript" language="javascript">
 	alert("登录成功");
