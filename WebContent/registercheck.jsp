@@ -22,7 +22,7 @@ if(rs.next())
 <%	
 }
 
-sql = "insert into user_member values (?, ?, ?);";
+sql = "insert into user_member values (?, ?, ?, 0);";
 pstmt = conn.prepareStatement(sql);
 pstmt.setString(1, user_reginfo.getUser_id());
 pstmt.setString(2, user_reginfo.getUser_nickname());

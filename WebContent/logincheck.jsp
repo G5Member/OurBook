@@ -26,6 +26,7 @@ if(!rs.next())
 else
 {
 	session.setAttribute("user_id", user_info.getUser_id());
+	session.setAttribute("user_coins", rs.getInt("user_coins"));
 %>
 <script type="text/javascript" language="javascript">
 	alert("登录成功");

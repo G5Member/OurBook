@@ -19,13 +19,9 @@ else
 {
 %>
 <%= session.getAttribute("user_id") %>,欢迎回来
-<br />
+<%= session.getAttribute("user_coins") %>书币
 <a href="logout.jsp">登出</a>
 <%
 }
 %>
-<%
-
-//out.println(request.getParameter("user_id"));
-//out.println(request.getParameter("user_password"));
-%>
+<br />
