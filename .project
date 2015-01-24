@@ -33,4 +33,26 @@
 		<nature>org.eclipse.jdt.core.javanature</nature>
 		<nature>org.eclipse.wst.jsdt.core.jsNature</nature>
 	</natures>
+	<linkedResources>
+		<link>
+			<name>第5组_用户手册.docx</name>
+			<type>1</type>
+			<location>E:/课件/软件工程/第5组_用户手册.docx</location>
+		</link>
+		<link>
+			<name>第5组_软件概要设计说明书.doc</name>
+			<type>1</type>
+			<location>E:/课件/软件工程/第5组_软件概要设计说明书.doc</location>
+		</link>
+		<link>
+			<name>第5组_需求文档.docx</name>
+			<type>1</type>
+			<location>E:/课件/软件工程/第5组_需求文档.docx</location>
+		</link>
+		<link>
+			<name>需求&amp;设计评审检查表（第5组）.docx</name>
+			<type>1</type>
+			<location>E:/课件/软件工程/需求&amp;设计评审检查表（第5组）.docx</location>
+		</link>
+	</linkedResources>
 </projectDescription>
