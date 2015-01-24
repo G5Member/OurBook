@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@page import = "java.sql.*" import = "com.mysql.jdbc.Driver" %>
+<%@page import="java.sql.*" import="java.util.*" import="com.mysql.jdbc.Driver" %>
 
 <%
 String driverName="com.mysql.jdbc.Driver";
