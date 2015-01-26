@@ -20,5 +20,6 @@ else
 {
 	out.print("用户名可以使用");
 }
-
+pstmt.close();
+conn.close();
 %>

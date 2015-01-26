@@ -1,7 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ page import="java.util.*" %>
-<%--@ include file="service/conn.jsp" --%>
 <%@ taglib prefix="c" 
            uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -35,18 +34,16 @@ Today's date: <%= (new java.util.Date()).toLocaleString() %>
 
 <br />
 <!-- 新手引导 -->
-<%@ include file="leading.jsp" %>
+<jsp:include page="leading.jsp" flush="true" />
 <!-- 用户登录 -->
-<%@ include file="login.jsp" %>
+<jsp:include page="login.jsp" flush="true" />
 <!-- 新书上架 -->
-<%@ include file="newbook.jsp" %>
+<jsp:include page="newbook.jsp" flush="true" />
 <!-- 书籍搜索 -->
-<%@ include file="booksearch.jsp" %>
-<!-- 购物车 -->
-<%@ include file="cart.jsp" %>
+<jsp:include page="booksearch.jsp" flush="true" />
 <!-- 页面顶部 -->
-<%@ include file="top.jsp" %>
+<jsp:include page="top.jsp" flush="true" />
 <!-- 页面底部 -->
-<%@ include file="bottom.jsp" %>
+<jsp:include page="bottom.jsp" flush="true" />
 </body>
 </html>

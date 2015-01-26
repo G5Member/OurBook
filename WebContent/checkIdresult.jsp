@@ -31,5 +31,8 @@ else
 	out.println("<used>" + "YES" + "</used>");
 }
 out.println("</user_idExist>");
+pstmt.close();
+conn.close();
+
 %>
 

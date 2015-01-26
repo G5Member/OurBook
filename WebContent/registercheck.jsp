@@ -45,6 +45,8 @@ else
 </script>
 <%	
 }
+pstmt.close();
+conn.close();
 %>
 
 
