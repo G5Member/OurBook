@@ -31,7 +31,26 @@ Today's date: <%= (new java.util.Date()).toLocaleString() %>
    String CT = hour+":"+ minute +":"+ second +" "+ am_pm;
    out.println("Current Time is: " + CT + "\n");
 %>
-
+<script type="text/javascript" language="javascript">
+<!--
+function gotosale()
+{
+	if(<%= (session.isNew() || session.getAttribute("user_id") == null) %>)
+	{
+		alert("先登录才可以出售书籍...");
+	}
+	else
+	{
+		var winH = 400;
+		var winW = 400;
+		var winT = (window.screen.availHeight - winH)/2;
+		var winL = (window.screen.availWidth - winW)/2;
+		window.open ("salebook.jsp", "salepage", "height="+ winH + ", width=" + winW + ", top=" + winT + ", left=" + winL); 
+	}
+}
+-->
+</script>
+<a href="javascript:void(0)" onclick="gotosale()">我要出售书籍</a>
 <br />
 <!-- 新手引导 -->
 <jsp:include page="leading.jsp" flush="true" />
@@ -45,5 +64,6 @@ Today's date: <%= (new java.util.Date()).toLocaleString() %>
 <jsp:include page="top.jsp" flush="true" />
 <!-- 页面底部 -->
 <jsp:include page="bottom.jsp" flush="true" />
+<br />
 </body>
 </html>

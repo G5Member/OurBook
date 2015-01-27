@@ -17,67 +17,95 @@
 </head>
 <body>
 <%
-String sql = "select book_price from book_info where book_id=?;";
+String sql = "select book_price, book_owner from book_info where book_id=? and book_amount>0;";
 PreparedStatement pstmt = conn.prepareStatement(sql);
 pstmt.setInt(1, buyinfo.getBook_id());
 ResultSet rs = pstmt.executeQuery();
 int book_price = 0;
+String book_owner;
 if(rs.next())
 {
 	book_price = rs.getInt("book_price");
-}
-sql = "select user_coins from user_member where user_id=?;";
-pstmt = conn.prepareStatement(sql);
-pstmt.setString(1, (String) buyinfo.getUser_id());
-rs = pstmt.executeQuery();
-int user_coins = 0;
-if(rs.next())
-{
-	user_coins = rs.getInt("user_coins");
-}
-else
-{
-	out.print("获取您的书币失败，请稍后再试...");
-}
-
-if(book_price > user_coins)
-{
-%>
-<script type="text/javascript" language="javascript">
-alert("您的书币不足...");
-window.document.location.href="book.jsp?book_id=" + <%= buyinfo.getBook_id()%> ;
-</script>
-<%
-}
-else
-{
-	sql = "update user_member, book_info set user_coins = user_coins-?, book_amount=book_amount-?, book_buyer=?, book_leavetime=? where book_id=? and user_id=?;";
-	pstmt = conn.prepareStatement(sql);
-	pstmt.setInt(1, book_price);
-	pstmt.setInt(2, 1);
-	pstmt.setString(3, buyinfo.getUser_id());
-	pstmt.setString(4, (new java.util.Date()).toLocaleString());
-	pstmt.setInt(5, buyinfo.getBook_id());
-	pstmt.setString(6, buyinfo.getUser_id());
-	if(pstmt.execute())
+	book_owner = rs.getString("book_owner");
+	if(book_owner.equals(buyinfo.getUser_id()))
 	{
 %>
-<script type="text/javascript" language="javascript">
-		alert("购买失败");
-</script>
+		<script type="text/javascript" language="javascript">
+		alert("您不能购买自己的图书...");
+		window.document.location.href="book.jsp?book_id=" + <%= buyinfo.getBook_id()%> ;
+		</script>
 <%
 	}
 	else
 	{
-		session.setAttribute("user_coins", user_coins - book_price);
-%>
-<script type="text/javascript" language="javascript">
-		alert("购买成功");
-		window.document.location.href = "index.jsp";
-</script>>
-<%
+	sql = "select user_coins from user_member where user_id=?;";
+	pstmt = conn.prepareStatement(sql);
+	pstmt.setString(1, (String) buyinfo.getUser_id());
+	rs = pstmt.executeQuery();
+	int user_coins = 0;
+	if(rs.next())
+	{
+		user_coins = rs.getInt("user_coins");
+	}
+	else
+	{
+		out.print("获取您的书币失败，请稍后再试...");
+	}
+
+	if(book_price > user_coins)
+	{
+	%>
+	<script type="text/javascript" language="javascript">
+	alert("您的书币不足...");
+	window.document.location.href="book.jsp?book_id=" + <%= buyinfo.getBook_id()%> ;
+	</script>
+	<%
+	}
+	else
+	{
+		sql = "update user_member, book_info set user_coins = if(user_id = ?, user_coins-?, user_coins), user_coins = if(user_id = ?, user_coins+?, user_coins), book_amount=book_amount-?, book_buyer=?, book_leavetime=? where book_id=? and (user_id=? or user_id=?);";
+		pstmt = conn.prepareStatement(sql);
+		pstmt.setString(1, buyinfo.getUser_id());
+		pstmt.setInt(2, book_price);
+		pstmt.setString(3, book_owner);
+		pstmt.setInt(4, book_price);
+		pstmt.setInt(5, 1);
+		pstmt.setString(6, buyinfo.getUser_id());
+		pstmt.setString(7, (new java.util.Date()).toLocaleString());
+		pstmt.setInt(8, buyinfo.getBook_id());
+		pstmt.setString(9, buyinfo.getUser_id());
+		pstmt.setString(10, book_owner);
+		if(pstmt.execute())
+		{
+	%>
+	<script type="text/javascript" language="javascript">
+			alert("购买失败");
+	</script>
+	<%
+		}
+		else
+		{
+			session.setAttribute("user_coins", user_coins - book_price);
+	%>
+	<script type="text/javascript" language="javascript">
+			alert("购买成功");
+			window.document.location.href = "index.jsp";
+	</script>
+	<%
+		}
+	}
 	}
 }
+else
+{
+%>
+	<script type="text/javascript" language="javascript">
+	alert("您慢了一步哦，该商品已售完...");
+	window.document.location.href="book.jsp?book_id=" + <%= buyinfo.getBook_id()%> ;
+	</script>
+<%
+}
+
 pstmt.close();
 conn.close();
 %>

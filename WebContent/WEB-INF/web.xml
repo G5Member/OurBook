@@ -7,8 +7,16 @@
     <welcome-file>index.jsp</welcome-file>
     <welcome-file>default.html</welcome-file>
     <welcome-file>default.htm</welcome-file>
-    <welcome-file>default.jsp</welcome-file>
+   	<welcome-file>default.jsp</welcome-file>
   </welcome-file-list>
+  <context-param> 
+	<description>Location to store uploaded file</description> 
+	<param-name>file-upload</param-name> 
+    <param-value>
+    	C:\Users\Administrator\workspace\OurBook\WebContent\book_img
+    </param-value> 
+  </context-param>
+  
   <error-page>
   	<error-code>404</error-code>
   	<location>/404.jsp</location>

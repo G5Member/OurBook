@@ -19,16 +19,16 @@ if(id==null)
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Insert title here</title>
 <script type="text/javascript" language="javascript">
-function checkOnline(notonline, user_id, book_id)
+function gotobuy(book_id)
 {
 	//alert( notonline + " " + user_id + " " + book_id);
-	if(notonline)
+	if(<%= (session.isNew() || session.getAttribute("user_id") == null) %>)
 	{
 		alert("请先登录再购买...");
 	}
 	else
 	{
-		window.document.location.href = "buy.jsp?user_id=" + user_id + "&book_id=" + book_id;
+		window.document.location.href = "buy.jsp?user_id=" + '<%= (String) session.getAttribute("user_id") %>' + "&book_id=" + book_id;
 	}
 }
 </script>
@@ -47,7 +47,7 @@ if(rs.next())
 编号：<%= rs.getInt("book_id") %><br />
 价格：<%= rs.getInt("book_price") %>书币<br />
 存量：<%= rs.getInt("book_amount") %><br />
-<img src="<%= "book_img/" + rs.getString("book_cover") %>" />
+<img src="<%= "book_img\\" + rs.getString("book_cover") %>" />
 来源：<%= rs.getString("book_owner") %><br />
 <%
 	if(rs.getString("book_intro") == null)
@@ -58,26 +58,19 @@ if(rs.next())
 	{
 		out.println("简介：" + rs.getString("book_intro"));
 	}
-	out.println("入库时间：" + rs.getTimestamp("book_jointime"));
-	String user_id;
-	boolean notonline = (session.isNew() || session.getAttribute("user_id") == null);
-	if(notonline)
-	{
-		user_id = null;
-	}
-	else
-	{
-		user_id = (String) session.getAttribute("user_id");
-	}
+	out.println("入库时间：" + rs.getTimestamp("book_jointime") + "<br />");
 %>
-<a href="javascript:void(0)" onclick = "checkOnline(<%= notonline %>, '<%= user_id %>', <%= book_id %>)" >购买</a>
+<a href="javascript:void(0)" onclick = "gotobuy(<%= book_id %>)" >购买</a>
 
 <%
 }
 else
 {
 %>
-
+<script type="text/javascript" language="javascript">
+//alert("该书不存在...");
+window.document.location.href = "404.jsp";
+</script>
 <%
 }
 pstmt.close();

@@ -38,6 +38,9 @@ if(pstmt.execute())
 }
 else
 {	
+	session.setAttribute("user_id", user_reginfo.getUser_id());
+	session.setAttribute("user_coins", 0);
+
 %>
 <script type="text/javascript" language="javascript">
 	alert("注册成功，将返回主页...");
