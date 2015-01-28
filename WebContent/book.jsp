@@ -47,10 +47,10 @@ if(rs.next())
 编号：<%= rs.getInt("book_id") %><br />
 价格：<%= rs.getInt("book_price") %>书币<br />
 存量：<%= rs.getInt("book_amount") %><br />
-<img src="<%= "book_img\\" + rs.getString("book_cover") %>" />
+<img src="<%= "book_img/" + rs.getString("book_cover") %>" />
 来源：<%= rs.getString("book_owner") %><br />
 <%
-	if(rs.getString("book_intro") == null)
+	if(rs.getString("book_intro").equals(""))
 	{
 		out.println("简介：暂无。");
 	}

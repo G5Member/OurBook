@@ -21,7 +21,7 @@ int book_id = 1;
 String book_name = "";
 int book_price = 0;
 int book_amount = 0;
-String book_intro = "";
+String book_intro = null;
 String book_cover = "";
 
 String sql = "select max(book_id) from book_info;";
@@ -70,9 +70,6 @@ if ((contentType.indexOf("multipart/form-data") >= 0))
         		String fieldName = fi.getFieldName();
         		String fileName = fi.getName();
         		boolean isInMemory = fi.isInMemory();
-        		out.print(fieldName);
-        		out.print(fileName);
-        		out.print(isInMemory);
         		long sizeInBytes = fi.getSize();
         	
 	       		if(sizeInBytes > 0)
@@ -88,7 +85,7 @@ if ((contentType.indexOf("multipart/form-data") >= 0))
         				book_cover = book_id + fileName.substring( fileName.lastIndexOf("."));
         				file = new File(filePath, book_cover);
         				fi.write(file ) ;
-        				out.println("Uploaded Filename: " + filePath + "\\" + fileName + "<br />");
+        				//out.println("Uploaded Filename: " + filePath + "\\" + fileName + "<br />");
         				break;
         			default: out.print("上传的不是图片文件！");
         			}
@@ -100,7 +97,6 @@ if ((contentType.indexOf("multipart/form-data") >= 0))
         	}
         	else
         	{
-        		String fieldName = fi.getFieldName();
         		switch(fi.getFieldName())
         		{
         		case "book_name":
@@ -117,9 +113,6 @@ if ((contentType.indexOf("multipart/form-data") >= 0))
            			break;
            		default: break;
            		}
-        		String fieldValue = fi.getString("UTF-8");
-        		out.println(fieldName + "<br />");
-        		out.println(fieldValue + "<br />");
         	}
         }
         if(book_cover.equals(""))
@@ -152,16 +145,22 @@ if ((contentType.indexOf("multipart/form-data") >= 0))
 %>
         	<script type="text/javascript" language="javascript">
         			alert("上架失败");
-        			//window.document.location.href = "index.jsp";
+        			window.document.location.href = "index.jsp";
         	</script>
 <%        	
         }
         else
         {
+        	out.print("页面即将跳转，请稍等...");
 %>
         	<script type="text/javascript" language="javascript">
+        	function reDirect()
+        	{
+        		window.document.location.href = "book.jsp?book_id=" + <%= book_id%>;
+        	}
         			alert("上架成功");
-        			window.document.location.href = "book.jsp?book_id=" + <%= book_id%>;
+        			window.setTimeout("reDirect()",7000);
+        			
         	</script>
 <%
 

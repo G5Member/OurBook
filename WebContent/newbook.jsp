@@ -33,7 +33,7 @@ while(rs.next())
 <img src="<%= "book_img/" + rs.getString("book_cover") %>" />
 <%
 	out.print(" " + rs.getString("book_owner"));
-	if(rs.getString("book_intro") == null)
+	if(rs.getString("book_intro").equals(""))
 	{
 		out.print(" 暂无简介");
 	}
