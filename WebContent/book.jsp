@@ -34,7 +34,7 @@ function gotobuy(book_id)
 </script>
 </head>
 <body>
-<jsp:include page="login.jsp" flush="true"/>
+<jsp:include page="top.jsp" flush="true"/>
 <%
 int book_id = Integer.valueOf(id);
 String sql = "select * from book_info where book_id = ?";

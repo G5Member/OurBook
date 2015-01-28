@@ -50,18 +50,14 @@ function gotosale()
 }
 -->
 </script>
+<!-- 页面顶部 -->
+<jsp:include page="top.jsp" flush="true" />
 <a href="javascript:void(0)" onclick="gotosale()">我要出售书籍</a>
 <br />
 <!-- 新手引导 -->
 <jsp:include page="leading.jsp" flush="true" />
-<!-- 用户登录 -->
-<jsp:include page="login.jsp" flush="true" />
 <!-- 新书上架 -->
 <jsp:include page="newbook.jsp" flush="true" />
-<!-- 书籍搜索 -->
-<jsp:include page="booksearch.jsp" flush="true" />
-<!-- 页面顶部 -->
-<jsp:include page="top.jsp" flush="true" />
 <!-- 页面底部 -->
 <jsp:include page="bottom.jsp" flush="true" />
 <br />
