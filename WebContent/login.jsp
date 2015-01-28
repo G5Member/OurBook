@@ -14,7 +14,7 @@
 if(session.isNew() || session.getAttribute("user_id") == null)
 {
 %>
-<a href="register.jsp" >点我注册</a>
+<a href="register.jsp" target="_blank">点我注册</a>
  <br />
 <form action="logincheck.jsp" method="POST">
 用户名：<input type="text" name="user_id" /><br />

@@ -7,6 +7,13 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Insert title here</title>
+<script type="text/javascript" language="javascirpt">
+function lookBook(book_id)
+{
+	window.open("book.jsp?book_id=" + String(book_id));
+}
+</script>
+
 </head>
 <%!
 int pageSize = 5;
