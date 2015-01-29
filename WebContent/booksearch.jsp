@@ -22,12 +22,27 @@ int showPage;
 %>
 <%
 String book_keyword = request.getParameter("book_keyword");
-//out.print(book_keyword);
-
-String sql = "select * from book_info where book_name like ? or book_intro like ?;";
-PreparedStatement pstmt = conn.prepareStatement(sql);
-pstmt.setString(1, "%" + book_keyword + "%");
-pstmt.setString(2, "%" + book_keyword + "%");
+String book_search_type = request.getParameter("book_search_type");
+//out.print(book_search_type);
+String sql;
+PreparedStatement pstmt;
+if(book_search_type == null)
+{
+	book_search_type = "search_book_name";
+}
+if(book_search_type.equals("search_book_id"))
+{
+	sql = "select * from book_info where book_id = ?;";
+	pstmt = conn.prepareStatement(sql);
+	pstmt.setInt(1, Integer.valueOf(book_keyword));
+}
+else
+{
+	sql = "select * from book_info where book_name like ? or book_intro like ?;";
+	pstmt = conn.prepareStatement(sql);
+	pstmt.setString(1, "%" + book_keyword + "%");
+	pstmt.setString(2, "%" + book_keyword + "%");
+}
 ResultSet rs = pstmt.executeQuery();
 
 //将游标移到最后一行 
@@ -53,9 +68,9 @@ pageCount=(recordCount%pageSize==0)?(recordCount/pageSize):(recordCount/pageSize
 
 //获取用户想要显示的页数：
 String integer = request.getParameter("showPage");
-if(integer==null)
+if(integer == null)
 {
-	integer="1";
+	integer = "1";
 }
 try
 {
@@ -65,10 +80,12 @@ catch(NumberFormatException e)
 {
 	showPage = 1;
 }
+
 if(showPage <= 1)
 {
 	showPage = 1;
 }
+
 if(showPage >= pageCount)
 {
 	showPage = pageCount;

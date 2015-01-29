@@ -15,7 +15,12 @@ function checkSearch(form)
 		alert("请输入搜索内容...");
 		return false;
 	}
-	else 
+	else if(form.book_search_type.value == "search_book_id" && isNaN(form.book_keyword.value))
+	{
+		alert("按编号搜索时仅能输入数字");
+		return false;
+	}
+	else
 	{
 		return true;
 	}
@@ -26,6 +31,8 @@ function checkSearch(form)
 
 <form action="booksearch.jsp" onsubmit="return checkSearch(this)" method="GET" target="_blank">
 <input type="text" name="book_keyword" />
+<input type="radio" name="book_search_type" value="search_book_name" />按书名、简介
+<input type="radio" name="book_search_type" value="search_book_id" />按编号
 <input type="submit" value="搜索" />
 </form>
 

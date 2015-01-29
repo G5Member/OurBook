@@ -105,9 +105,6 @@ if ((contentType.indexOf("multipart/form-data") >= 0))
         		case "book_price":
         			book_price = Integer.valueOf(fi.getString("UTF-8"));
         			break;
-        		case "book_amount":
-           			book_amount = Integer.valueOf(fi.getString("UTF-8"));
-           			break;
            		case "book_intro":
            			book_intro = fi.getString("UTF-8");
            			break;
@@ -122,7 +119,7 @@ if ((contentType.indexOf("multipart/form-data") >= 0))
             pstmt.setInt(1, book_id);
             pstmt.setString(2, book_name);
             pstmt.setInt(3, book_price);
-            pstmt.setInt(4, book_amount);
+            pstmt.setInt(4, 1);
             pstmt.setString(5, (String)session.getAttribute("user_id"));
             pstmt.setString(6, book_intro);
             pstmt.setString(7, (new java.util.Date()).toLocaleString());
@@ -134,7 +131,7 @@ if ((contentType.indexOf("multipart/form-data") >= 0))
             pstmt.setInt(1, book_id);
             pstmt.setString(2, book_name);
             pstmt.setInt(3, book_price);
-            pstmt.setInt(4, book_amount);
+            pstmt.setInt(4, 1);
             pstmt.setString(5, book_cover);
             pstmt.setString(6, (String)session.getAttribute("user_id"));
             pstmt.setString(7, book_intro);

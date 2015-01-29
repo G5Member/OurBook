@@ -14,7 +14,6 @@
 <%-- 类型enctype用multipart/form-data，这样可以把文件中的数据作为流式数据上传，不管是什么文件类型，均可上传。--%>
 图书名称：<input type="text" name="book_name" /><br />
 您的定价：<input type="text" name="book_price" /><br />
-数量：<input type="text" name="book_amount" /><br />
 简介：<textarea rows="3" cols="20" name="book_intro">请在简介中包含图书作者、出版社、出版时间、新旧程度等必要信息</textarea><br />
 请选择要上传的文件<input type="file" name="file" size="50" />
 <input type="submit" value="上传" />
