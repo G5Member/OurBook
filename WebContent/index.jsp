@@ -61,5 +61,8 @@ function gotosale()
 <!-- 页面底部 -->
 <jsp:include page="bottom.jsp" flush="true" />
 <br />
+<!-- 管理员入口 -->
+<a href="service/adminlogin.jsp" target="_blank">管理员入口</a>
+
 </body>
 </html>

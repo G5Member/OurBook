@@ -39,6 +39,7 @@ if(pstmt.execute())
 else
 {	
 	session.setAttribute("user_id", user_reginfo.getUser_id());
+	session.setAttribute("user_nickname", user_reginfo.getUser_nickname());
 	session.setAttribute("user_coins", 0);
 
 %>

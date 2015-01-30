@@ -27,8 +27,9 @@ if(session.isNew() || session.getAttribute("user_id") == null)
 else
 {
 %>
-<%= session.getAttribute("user_id") %>,欢迎回来
+<a href="userprofile.jsp?user_id=<%= session.getAttribute("user_id") %>"><%= session.getAttribute("user_nickname") %><a/>,欢迎
 <%= session.getAttribute("user_coins") %>书币
+<a href="recharge.jsp" target="_blank">充值书币</a>
 <a href="logout.jsp">登出</a>
 <%
 }
