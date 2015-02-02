@@ -1,59 +1,96 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ include file="conn.jsp" %>
+<%@ include file="service/conn.jsp" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <%
-if(session.getAttribute("admin_id") == null)
+if(session.getAttribute("user_id") == null)
 {
-	response.sendRedirect("../404.jsp");	
+	response.sendRedirect("404.jsp");
 }
+String user = request.getParameter("user");
 String book_status = request.getParameter("book_status");
-if(book_status != null)
+if(user == null || book_status == null)
 {
-	String sql = "select * from book_info where book_status=?;";
-	PreparedStatement pstmt = conn.prepareStatement(sql);
-	pstmt.setString(1, book_status);
+	response.sendRedirect("404.jsp");
+}
+PreparedStatement pstmt = null;
+switch(user)
+{
+case "owner":
+{
+	switch(book_status)
+	{
+	case "unchecked":
+	case "onsale":
+	{
+		String sql = "select * from book_info where book_owner=? and book_status=?;";
+		pstmt = conn.prepareStatement(sql);
+		pstmt.setString(1, (String) session.getAttribute("user_id"));
+		pstmt.setString(2, book_status);
+		break;
+	}
+	case "saled":
+	{
+		String sql = "select * from book_info where book_owner=? and book_status<>'unchecked' and book_status<>'unsaled';";
+		pstmt = conn.prepareStatement(sql);
+		pstmt.setString(1, (String) session.getAttribute("user_id"));
+		break;
+	}
+	default: break;
+	}
+	
+	break;
+}
+case "buyer":
+{
+	String sql = "select * from book_info where book_buyer=? and book_status=?;";
+	pstmt = conn.prepareStatement(sql);
+	pstmt.setString(1, (String) session.getAttribute("user_id"));
+	pstmt.setString(2, book_status);
+	switch(book_status)
+	{
+	case "delivered":
+	{
+		break;
+	}
+	case "ackrecved":
+	{
+		break;
+	}
+	default: break;
+	}
+	break;
+}
+default: response.sendRedirect("404.jsp"); break;
+}
+
 %>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Insert title here</title>
+</head>
 <script type="text/javascript" language="javascirpt">
 function lookBook(book_id)
 {
-	window.open("../book.jsp?book_id=" + String(book_id));
+	window.open("book.jsp?book_id=" + String(book_id));
 }
-function admit_book(book_id)
+function ackrecv_book(book_id)
 {
 	var xhr = new XMLHttpRequest();
 	xhr.onreadystatechange=function()
 	{
 		if(xhr.readyState==4 && xhr.status==200)
 		{
-			document.getElementById("admitresult" + book_id).innerHTML=xhr.responseText;
+			document.getElementById("ackrecvresult" + book_id).innerHTML=xhr.responseText;
 		}
 	}
-	xhr.open("GET", "bookop.jsp?op=admit&book_id=" + book_id, true);
+	//window.open("bookop.jsp?op=ackrecv&book_id=" + book_id);
+	xhr.open("GET", "bookop.jsp?op=ackrecv&book_id=" + book_id, true);
 	xhr.send();
-}
-function send_book(book_id)
-{
-	var xhr = new XMLHttpRequest();
-	xhr.onreadystatechange=function()
-	{
-		if(xhr.readyState==4 && xhr.status==200)
-		{
-			document.getElementById("sendresult" + book_id).innerHTML=xhr.responseText;
-		}
-	}
-	//window.open("adminbook.jsp?book_status=" + str);
-	xhr.open("GET", "bookop.jsp?op=send&book_id=" + book_id, true);
-	xhr.send();
-
 }
 </script>
-
-</head>
+<body>
 <%!
 int pageSize = 10;
 int pageCount;
@@ -120,7 +157,7 @@ for(int i=1;i<=pageSize;i++)
 	out.print(" " + rs.getInt("book_price") + "书币");
 	out.print(" " + rs.getInt("book_amount") + "件");
 %>
-<img src="<%= "../book_img/" + rs.getString("book_cover") %>" />
+<img src="<%= "book_img/" + rs.getString("book_cover") %>" />
 <%
 	out.print(" " + rs.getString("book_owner"));
 	if(rs.getString("book_intro").equals(""))
@@ -132,19 +169,12 @@ for(int i=1;i<=pageSize;i++)
 		out.print(" " + rs.getString("book_intro"));
 	}
 	out.print(" " + rs.getTimestamp("book_jointime"));
-	if(book_status.equals("unchecked"))
+	if(book_status.equals("delivered"))
 	{
 %>
-<input type="button" onclick="admit_book(<%= rs.getInt("book_id") %>)" value="通过" />
-<span id="admitresult<%= rs.getInt("book_id") %>"></span>
+<input type="button" onclick="ackrecv_book(<%= rs.getInt("book_id") %>)" value="确认收货" />
+<span id="ackrecvresult<%= rs.getInt("book_id") %>"></span>
 <%	
-	}
-	else if(book_status.equals("saled"))
-	{
-%>
-<input type="button" onclick="send_book(<%= rs.getInt("book_id") %>)" value="已发货" />
-<span id="sendresult<%= rs.getInt("book_id") %>"></span>
-<%		
 	}
 %>
 	<br />
@@ -153,30 +183,25 @@ for(int i=1;i<=pageSize;i++)
 }
 %>
 <br />
-<a href="adminbookinfo.jsp?book_status=<%= book_status %>&showPage=1">首页</a>
-<a href="adminbookinfo.jsp?book_status=<%= book_status %>&showPage=<%= showPage-1 %>">上一页</a>
+<a href="userbookinfo.jsp?user=<%= user %>&book_status=<%= book_status %>&showPage=1">首页</a>
+<a href="userbookinfo.jsp?user=<%= user %>&book_status=<%= book_status %>&showPage=<%= showPage-1 %>">上一页</a>
 <%
 for(int i=1; i<=pageCount; i++)
 {
 %>
-<a href="adminbookinfo.jsp?book_status=<%= book_status %>&showPage=<%= i %>"><%= i %></a>
+<a href="userbookinfo.jsp?user=<%= user %>&book_status=<%= book_status %>&showPage=<%= i %>"><%= i %></a>
 <%
 }
 %>
-<a href="adminbookinfo.jsp?book_status=<%= book_status %>&showPage=<%= showPage+1 %>">下一页</a>
-<a href="adminbookinfo.jsp?book_status=<%= book_status %>&showPage=<%= pageCount %>">末页</a>
-<form action="adminbookinfo.jsp?book_status=<%= book_status %>" method="POST">
+<a href="userbookinfo.jsp?user=<%= user %>&book_status=<%= book_status %>&showPage=<%= showPage+1 %>">下一页</a>
+<a href="userbookinfo.jsp?user=<%= user %>&book_status=<%= book_status %>&showPage=<%= pageCount %>">末页</a>
+<form action="userbookinfo.jsp?user=<%= user %>&book_status=<%= book_status %>" method="POST">
 跳转到第<input type="text" name="showPage" size="4" />页
 <input type="submit" value="跳转" />
 </form>
 <%
 }
 pstmt.close();
-}
-else
-{
-	response.sendRedirect("../404.jsp");
-}
 conn.close();
 %>
 </body>
