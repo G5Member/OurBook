@@ -23,9 +23,7 @@ if(session.isNew() || session.getAttribute("admin_id") == null)
 }
 else
 {
-%>
-<a href="adminlogout.jsp">注销管理员登录</a>
-<%
+response.sendRedirect("adminmain.jsp");
 }
 }
 else

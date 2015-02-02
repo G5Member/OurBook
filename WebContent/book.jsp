@@ -49,17 +49,42 @@ if(rs.next())
 存量：<%= rs.getInt("book_amount") %><br />
 <img src="<%= "book_img/" + rs.getString("book_cover") %>" />
 来源：<%= rs.getString("book_owner") %><br />
+简介：
 <%
 	if(rs.getString("book_intro").equals(""))
 	{
-		out.println("简介：暂无。");
+		out.print("暂无。");
 	}
 	else
 	{
-		out.println("简介：" + rs.getString("book_intro"));
+		out.print(rs.getString("book_intro"));
 	}
-	out.println("入库时间：" + rs.getTimestamp("book_jointime") + "<br />");
-%>
+%><br />
+入库时间：<%= rs.getTimestamp("book_jointime") %><br />
+状态；
+<%
+	String book_status = rs.getString("book_status");
+	if(book_status.equals("unchecked"))
+	{
+		out.print("待审核");
+	}
+	else if(book_status.equals("onsale"))
+	{
+		out.print("待售中");
+	}
+	else if(book_status.equals("saled"))
+	{
+		out.print("已售待发货");
+	}
+	else if(book_status.equals("delivered"))
+	{
+		out.print("已发货待确认");
+	}
+	else if(book_status.equals("ackrecved"))
+	{
+		out.print("已确认收货");
+	}
+%><br />
 <a href="javascript:void(0)" onclick = "gotobuy(<%= book_id %>)" >购买</a>
 
 <%

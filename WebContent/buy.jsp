@@ -16,8 +16,11 @@
 
 </head>
 <body>
+<%!
+int freightcoins = 100;
+%>
 <%
-String sql = "select book_price, book_owner from book_info where book_id=? and book_amount>0;";
+String sql = "select book_price, book_owner from book_info where book_id=? and book_amount>0 and book_status='onsale';";
 PreparedStatement pstmt = conn.prepareStatement(sql);
 pstmt.setInt(1, buyinfo.getBook_id());
 ResultSet rs = pstmt.executeQuery();
@@ -63,18 +66,14 @@ if(rs.next())
 	}
 	else
 	{
-		sql = "update user_member, book_info set user_coins = if(user_id = ?, user_coins-?, user_coins), user_coins = if(user_id = ?, user_coins+?, user_coins), book_amount=book_amount-?, book_buyer=?, book_leavetime=? where book_id=? and (user_id=? or user_id=?);";
+		sql = "update user_member, book_info set user_coins=user_coins-?, book_amount=book_amount-?, book_buyer=?, book_leavetime=?, book_status='saled' where book_id=? and user_id=?;";
 		pstmt = conn.prepareStatement(sql);
-		pstmt.setString(1, buyinfo.getUser_id());
-		pstmt.setInt(2, book_price);
-		pstmt.setString(3, book_owner);
-		pstmt.setInt(4, book_price);
-		pstmt.setInt(5, 1);
+		pstmt.setInt(1, book_price + freightcoins);
+		pstmt.setInt(2, 1);
+		pstmt.setString(3, buyinfo.getUser_id());
+		pstmt.setString(4, (new java.util.Date()).toLocaleString());
+		pstmt.setInt(5, buyinfo.getBook_id());
 		pstmt.setString(6, buyinfo.getUser_id());
-		pstmt.setString(7, (new java.util.Date()).toLocaleString());
-		pstmt.setInt(8, buyinfo.getBook_id());
-		pstmt.setString(9, buyinfo.getUser_id());
-		pstmt.setString(10, book_owner);
 		if(pstmt.execute())
 		{
 	%>
@@ -85,7 +84,7 @@ if(rs.next())
 		}
 		else
 		{
-			session.setAttribute("user_coins", user_coins - book_price);
+			session.setAttribute("user_coins", user_coins - freightcoins - book_price);
 	%>
 	<script type="text/javascript" language="javascript">
 			alert("购买成功");
@@ -100,7 +99,7 @@ else
 {
 %>
 	<script type="text/javascript" language="javascript">
-	alert("您慢了一步哦，该商品已售完...");
+	alert("该商品已售完或者还未上架哦...");
 	window.document.location.href="book.jsp?book_id=" + <%= buyinfo.getBook_id()%> ;
 	</script>
 <%

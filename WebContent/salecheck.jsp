@@ -114,7 +114,7 @@ if ((contentType.indexOf("multipart/form-data") >= 0))
         }
         if(book_cover.equals(""))
         {
-        	sql = "insert into book_info(book_id, book_name, book_price, book_amount, book_owner, book_intro, book_jointime) values(?, ?, ?, ?, ?, ?, ?);";
+        	sql = "insert into book_info(book_id, book_name, book_price, book_amount, book_owner, book_intro, book_jointime, book_status) values(?, ?, ?, ?, ?, ?, ?, 'unchecked');";
             pstmt = conn.prepareStatement(sql);
             pstmt.setInt(1, book_id);
             pstmt.setString(2, book_name);
@@ -126,7 +126,7 @@ if ((contentType.indexOf("multipart/form-data") >= 0))
         }
         else
         {
-        	sql = "insert into book_info(book_id, book_name, book_price, book_amount, book_cover, book_owner, book_intro, book_jointime) values(?, ?, ?, ?, ?, ?, ?, ?);";
+        	sql = "insert into book_info(book_id, book_name, book_price, book_amount, book_cover, book_owner, book_intro, book_jointime, book_status) values(?, ?, ?, ?, ?, ?, ?, ?, 'unchecked');";
         	pstmt = conn.prepareStatement(sql);
             pstmt.setInt(1, book_id);
             pstmt.setString(2, book_name);
@@ -155,7 +155,7 @@ if ((contentType.indexOf("multipart/form-data") >= 0))
         	{
         		window.document.location.href = "book.jsp?book_id=" + <%= book_id%>;
         	}
-        			alert("上架成功");
+        			alert("提交成功");
         			window.setTimeout("reDirect()",7000);
         			
         	</script>

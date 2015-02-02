@@ -18,7 +18,7 @@ function lookBook(book_id)
 新书上架模块 <br />
 编号 书名 价格 存量 封面 来源 简介 入库时间  <br />
 <%
-String sql = "select * from book_info where book_amount > 0 order by book_jointime desc limit 5";
+String sql = "select * from book_info where book_amount > 0 and book_status = 'onsale' order by book_jointime desc limit 5";
 PreparedStatement pstmt = conn.prepareStatement(sql);
 ResultSet rs = pstmt.executeQuery();
 while(rs.next())

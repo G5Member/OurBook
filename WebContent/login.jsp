@@ -7,6 +7,23 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>login</title>
+
+<script type="text/javascript" language="javascirpt">
+function checkadmin()
+{
+	if(<%= session.getAttribute("admin_id") != null %>)
+	{
+		alert("请先退出管理员账户,然后刷新此页面...");
+		return false;
+	}
+	else
+	{
+		return true;
+	}
+}
+</script>
+
+
 </head>
 <body>
 用户登录模块
@@ -16,7 +33,7 @@ if(session.isNew() || session.getAttribute("user_id") == null)
 %>
 <a href="register.jsp" target="_blank">点我注册</a>
  <br />
-<form action="logincheck.jsp" method="POST">
+<form action="logincheck.jsp" onsubmit="return checkadmin()" method="POST">
 用户名：<input type="text" name="user_id" /><br />
 密码<input type="password" name="user_password" /><br />
 <input type="submit" value="登录" />

@@ -29,7 +29,7 @@ function checkrecharge(form)
 <body>
 <jsp:include page="top.jsp" />
 <form action="rechargecheck.jsp" onsubmit="return checkrecharge(this)" method="POST">
-请填写您要充值的数额（1人民币=1书币）：<input type="text" name="coinsnum" />
+请填写您要充值的数额（1人民币=10书币）：<input type="text" name="coinsnum" />
 <input type="submit" value="充值" />
 </form>
 </body>
