@@ -1,36 +1,37 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ page import="java.util.*" %>
-<%@ taglib prefix="c" 
-           uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>OurBook</title>
-</head>
-<body>
-<% out.println("your ip address is " + request.getRemoteAddr()); %>
-Today's date: <%= (new java.util.Date()).toLocaleString() %>
-<br />
-<c:out value="这句话使用jstl写出来的0.0" />
+<link rel="stylesheet" type="text/css" href="css.css" />
+<script type="text/javascript" language="javascript">
+function startTime()
+{
+var today=new Date()
+var h=today.getHours()
+var m=today.getMinutes()
+var s=today.getSeconds()
+// add a zero in front of numbers<10
+m=checkTime(m)
+s=checkTime(s)
+document.getElementById('clockdiv').innerHTML=h+":"+m+":"+s
+t=setTimeout('startTime()',500)
+}
 
-<%
-   // 设置每隔5秒自动刷新
-   //response.setIntHeader("Refresh", 1);
-   // 获取当前时间
-   Calendar calendar = new GregorianCalendar();
-   String am_pm;
-   int hour = calendar.get(Calendar.HOUR);
-   int minute = calendar.get(Calendar.MINUTE);
-   int second = calendar.get(Calendar.SECOND);
-   if(calendar.get(Calendar.AM_PM) == 0)
-      am_pm = "AM";
-   else
-      am_pm = "PM";
-   String CT = hour+":"+ minute +":"+ second +" "+ am_pm;
-   out.println("Current Time is: " + CT + "\n");
-%>
+function checkTime(i)
+{
+if (i<10) 
+  {i="0" + i}
+  return i
+}
+</script>
+</head>
+<body onload="startTime()">
+<div id="container">
+
 <script type="text/javascript" language="javascript">
 <!--
 function gotosale()
@@ -50,19 +51,37 @@ function gotosale()
 }
 -->
 </script>
-<!-- 页面顶部 -->
-<jsp:include page="top.jsp" flush="true" />
-<a href="javascript:void(0)" onclick="gotosale()">我要出售书籍</a>
-<br />
-<!-- 新手引导 -->
-<jsp:include page="leading.jsp" flush="true" />
+<div id="Header">
+<div id="clockdiv" style="background-color:#FDF5E6"></div>
+<div id="menu">
+　　　<ul>
+　　　　<li><a href="index.jsp">首页</a></li>
+　　　　<li class="menuDiv"></li>
+　　　　<li><a href="javascript:void(0)" onclick="gotosale()">出售书籍</a></li>
+　　　　<li class="menuDiv"></li>
+　　　　<li><a href="#">联系我们</a></li>
+　　　　<li class="menuDiv"></li>
+	</ul>
+</div>
+<div id="banner">
+</div>
+</div>
+<div id="PageBody">
+<div id="SiderBar">
+<!-- 用户登录 -->
+<jsp:include page="login.jsp" flush="true" />
+</div>
+<div id="MainBody">
+<!-- 书籍搜索 -->
+<jsp:include page="searchframe.jsp" flush="true" />
 <!-- 新书上架 -->
 <jsp:include page="newbook.jsp" flush="true" />
+</div>
+</div>
+<div id="Footer">
 <!-- 页面底部 -->
 <jsp:include page="bottom.jsp" flush="true" />
-<br />
-<!-- 管理员入口 -->
-<a href="service/adminlogin.jsp" target="_blank">管理员入口</a>
-
+</div>
+</div>
 </body>
 </html>

@@ -17,7 +17,28 @@ if(id==null)
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Insert title here</title>
+<title>图书信息</title>
+<style type="text/css">
+body {
+background-color: #DCDCDC;
+}
+#book {
+width:800px;
+float: right;
+text-align:left;
+overflow:hidden;
+claer: both;
+
+}
+#bookinfo {
+width: 800px;
+margin: auto;
+test-align:left;
+clear: both;
+
+
+}
+</style>
 <script type="text/javascript" language="javascript">
 function gotobuy(book_id)
 {
@@ -34,7 +55,11 @@ function gotobuy(book_id)
 </script>
 </head>
 <body>
-<jsp:include page="top.jsp" flush="true"/>
+<div id="book">
+<div style="width: 400px; float: right; clear: both;">
+<jsp:include page="login.jsp" flush="true"/>
+</div>
+<div id="bookinfo">
 <%
 int book_id = Integer.valueOf(id);
 String sql = "select * from book_info where book_id = ?";
@@ -44,12 +69,32 @@ ResultSet rs = pstmt.executeQuery();
 if(rs.next())
 {
 %>
-编号：<%= rs.getInt("book_id") %><br />
-价格：<%= rs.getInt("book_price") %>书币<br />
-存量：<%= rs.getInt("book_amount") %><br />
-<img src="<%= "book_img/" + rs.getString("book_cover") %>" />
-来源：<%= rs.getString("book_owner") %><br />
-简介：
+<table border="1">
+<tr>
+<td>编号：</td>
+<td><%= rs.getInt("book_id") %></td>
+</tr>
+<tr>
+<td>价格：</td>
+<td><%= rs.getInt("book_price") %>书币</td>
+</tr>
+<tr>
+<td>存量：</td>
+<td><%= rs.getInt("book_amount") %></td>
+</tr>
+<tr>
+<td>封面：</td>
+<td><img src="<%= "book_img/" + rs.getString("book_cover") %>" /></td>
+</tr>
+<tr>
+<td>来源：</td>
+<td>
+<%= rs.getString("book_owner") %>
+</td>
+</tr>
+<tr>
+<td>简介：</td>
+<td>
 <%
 	if(rs.getString("book_intro").equals(""))
 	{
@@ -59,9 +104,16 @@ if(rs.next())
 	{
 		out.print(rs.getString("book_intro"));
 	}
-%><br />
-入库时间：<%= rs.getTimestamp("book_jointime") %><br />
-状态；
+%>
+</td>
+</tr>
+<tr>
+<td>入库时间：</td>
+<td><%= rs.getTimestamp("book_jointime") %></td>
+</tr>
+<tr>
+<td>状态；</td>
+<td>
 <%
 	String book_status = rs.getString("book_status");
 	if(book_status.equals("unchecked"))
@@ -84,7 +136,10 @@ if(rs.next())
 	{
 		out.print("已确认收货");
 	}
-%><br />
+%>
+</td>
+</tr>
+</table>
 <a href="javascript:void(0)" onclick = "gotobuy(<%= book_id %>)" >购买</a>
 
 <%
@@ -101,5 +156,7 @@ window.document.location.href = "404.jsp";
 pstmt.close();
 conn.close();
 %>
+</div>
+</div>
 </body>
 </html>

@@ -6,7 +6,16 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>newbook</title>
+<style type="text/css">
+#newbook {
+ width:500px;
+ text-align:left;
+ float:left; /*浮动居右*/
+ clear:right; /*不允许右侧存在浮动*/
+ overflow:hidden;
+background-color: #F0FFFF;
+}
+</style>
 <script type="text/javascript" language="javascirpt">
 function lookBook(book_id)
 {
@@ -15,40 +24,55 @@ function lookBook(book_id)
 </script>
 </head>
 <body>
-新书上架模块 <br />
-编号 书名 价格 存量 封面 来源 简介 入库时间  <br />
+<div id="newbook">
+<table border="1">
+<tr>
+<td>编号</td>
+<td>书名</td>
+<td>价格</td>
+<td>存量</td>
+<td>封面</td>
+<td>来源</td>
+<td>简介</td>
+<td>入库时间</td>
+</tr>
 <%
 String sql = "select * from book_info where book_amount > 0 and book_status = 'onsale' order by book_jointime desc limit 5";
 PreparedStatement pstmt = conn.prepareStatement(sql);
 ResultSet rs = pstmt.executeQuery();
 while(rs.next())
 {
-	out.print(rs.getInt("book_id") + " ");
 %>
-<a href="javascript:void(0);" onclick="lookBook(<%= rs.getInt("book_id")%>)">《 <%= rs.getString("book_name")%>》</a>
+<tr>
+<td><%= rs.getInt("book_id") %></td>
+<td><a href="javascript:void(0);" onclick="lookBook(<%= rs.getInt("book_id")%>)">《 <%= rs.getString("book_name")%>》</a></td>
+<td><%= rs.getInt("book_price") %>书币</td>
+<td><%= rs.getInt("book_amount") %>件</td>
+<td><img src="<%= "book_img/" + rs.getString("book_cover") %>" /></td>
+<td><%= rs.getString("book_owner") %></td>
+<td>
 <%
-	out.print(" " + rs.getInt("book_price") + "书币");
-	out.print(" " + rs.getInt("book_amount") + "件");
-%>
-<img src="<%= "book_img/" + rs.getString("book_cover") %>" />
-<%
-	out.print(" " + rs.getString("book_owner"));
 	if(rs.getString("book_intro").equals(""))
 	{
-		out.print(" 暂无简介");
+%>
+暂无简介
+<%
 	}
 	else
 	{
-		out.print(" " + rs.getString("book_intro"));
-	}
-	out.print(" " + rs.getTimestamp("book_jointime"));
 %>
-<br />
+<%= rs.getString("book_intro") %>
+<%
+	}
+%>
+</td>
+<td><%= rs.getTimestamp("book_jointime") %></td>
+</tr>
 <%
 }
 %>
-
-<br />
+</table>
+</div>
 </body>
 </html>
 <%

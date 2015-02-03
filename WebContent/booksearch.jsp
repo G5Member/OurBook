@@ -61,7 +61,17 @@ if(recordCount == 0)
 else
 {
 %>
-编号 书名 价格 存量 封面 来源 简介 入库时间  <br />
+<table border="1">
+<tr>
+<td>编号</td>
+<td>书名</td>
+<td>价格</td>
+<td>存量</td>
+<td>封面</td>
+<td>来源</td>
+<td>简介</td>
+<td>入库时间</td>
+</tr>
 <%
 //计算分页后的总数 
 pageCount=(recordCount%pageSize==0)?(recordCount/pageSize):(recordCount/pageSize+1);
@@ -98,32 +108,37 @@ rs.absolute(position);
 //用for循环显示本页中应显示的的记录
 for(int i=1;i<=pageSize;i++)
 {  
-	out.print(rs.getInt("book_id") + " ");
 %>
-<a href="javascript:void(0);" onclick="lookBook(<%= rs.getInt("book_id")%>)">《 <%= rs.getString("book_name")%>》</a>
+<tr>
+<td><%= rs.getInt("book_id") %></td>
+<td><a href="javascript:void(0);" onclick="lookBook(<%= rs.getInt("book_id")%>)">《 <%= rs.getString("book_name")%>》</a></td>
+<td><%= rs.getInt("book_price") %>书币</td>
+<td><%= rs.getInt("book_amount") %>件</td>
+<td><img src="<%= "book_img/" + rs.getString("book_cover") %>" /></td>
+<td><%= rs.getString("book_owner") %></td>
+<td>
 <%
-	out.print(" " + rs.getInt("book_price") + "书币");
-	out.print(" " + rs.getInt("book_amount") + "件");
-%>
-<img src="<%= "book_img/" + rs.getString("book_cover") %>" />
-<%
-	out.print(" " + rs.getString("book_owner"));
 	if(rs.getString("book_intro").equals(""))
 	{
-		out.print(" 暂无简介");
+%>
+暂无简介
+<%
 	}
 	else
 	{
-		out.print(" " + rs.getString("book_intro"));
-	}
-	out.print(" " + rs.getTimestamp("book_jointime"));
 %>
-<br />
+<%= rs.getString("book_intro") %>
+<%
+	}
+%>
+</td>
+<td><%= rs.getTimestamp("book_jointime") %></td>
+</tr>
 <%
 	if(!rs.next()) break;
 }
 %>
-
+</table>
 <a href="booksearch.jsp?book_keyword=<%= book_keyword %>&showPage=1">首页</a>
 <a href="booksearch.jsp?book_keyword=<%= book_keyword %>&showPage=<%= showPage-1 %>">上一页</a>
 <%

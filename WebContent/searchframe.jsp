@@ -7,6 +7,14 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Insert title here</title>
+
+<style type="text/css">
+#searchframe {
+width:500px; /*设定宽度*/
+text-align:left; /*文字左对齐*/
+}
+</style>
+
 <script type="text/javascript" language="javascript">
 function checkSearch(form)
 {
@@ -28,13 +36,13 @@ function checkSearch(form)
 </script>
 </head>
 <body>
-
+<div id="searchframe">
 <form action="booksearch.jsp" onsubmit="return checkSearch(this)" method="GET" target="_blank">
 <input type="text" name="book_keyword" />
 <input type="radio" name="book_search_type" value="search_book_name" />按书名、简介
 <input type="radio" name="book_search_type" value="search_book_id" />按编号
 <input type="submit" value="搜索" />
 </form>
-
+</div>
 </body>
 </html>
